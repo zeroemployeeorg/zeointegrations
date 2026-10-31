@@ -1,0 +1,132 @@
+[
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": null,
+    "old_blob": null,
+    "new_path": "src/zeo_integrations/loops/NOTICE",
+    "new_blob": "c5edf0da2b6055c352f020f446780a0c3f214a7a",
+    "new_sha256": "88bea163b502bca686bd08b663e3b5ebeea6fa76a9db12e920eec0ca358fdbdd",
+    "delivered_source": "original narrow adapter, tests or aggregate NOTICE authored for this slice"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": "packages/loops/src/zeo_integrations/loops/__init__.py",
+    "old_blob": "9df4c51ba2657b11228e54692b3afe4518884d74",
+    "new_path": "src/zeo_integrations/loops/__init__.py",
+    "new_blob": "7ece0f5ba186d985866b1d4cbe03dc56de458341",
+    "new_sha256": "23c864683f7f02a2b0f40275a60f634038ea2769fdcdb0b076a0f7f1cdfdc510",
+    "delivered_source": "expanded zip e78cb9c3, aggregate/3.12 adaptation"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": "packages/loops/src/zeo_integrations/loops/client.py",
+    "old_blob": "6d358b5ac3d4aa7773c07c02b9f8fa0383fb5983",
+    "new_path": "src/zeo_integrations/loops/client.py",
+    "new_blob": "6d358b5ac3d4aa7773c07c02b9f8fa0383fb5983",
+    "new_sha256": "66c1733317837456b0f2c4029a89c5fa30f7df5f728bd1da104405f5e98a4f75",
+    "delivered_source": "expanded zip e78cb9c3, aggregate/3.12 adaptation"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": null,
+    "old_blob": null,
+    "new_path": "src/zeo_integrations/loops/connect.py",
+    "new_blob": "306f36064e7ee0fbd06d8272eff94f25ee60a537",
+    "new_sha256": "d635accd69c315b002278c1f858e5dcb5992eb82c29555f830f62cc018c2bbde",
+    "delivered_source": "original narrow adapter, tests or aggregate NOTICE authored for this slice"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": "packages/loops/src/zeo_integrations/loops/contacts.py",
+    "old_blob": "1c33a08b63c7dcc6da27685e6f4777577e8f06ba",
+    "new_path": "src/zeo_integrations/loops/contacts.py",
+    "new_blob": "1c33a08b63c7dcc6da27685e6f4777577e8f06ba",
+    "new_sha256": "4ca32c8899b7a4e8ff60cf7f9b00c92432e7fd34f37870762cbe2d9d4cb49aa7",
+    "delivered_source": "expanded zip e78cb9c3, aggregate/3.12 adaptation"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": "packages/loops/src/zeo_integrations/loops/models.py",
+    "old_blob": "c70992c837c41ea6fac16a1388a60f9ddca04698",
+    "new_path": "src/zeo_integrations/loops/models.py",
+    "new_blob": "c70992c837c41ea6fac16a1388a60f9ddca04698",
+    "new_sha256": "dbdf159cab4ef4d7aa1c9ae7b5f1ecf6671db5201df43fe1ccbc5143d2fc30cf",
+    "delivered_source": "expanded zip e78cb9c3, aggregate/3.12 adaptation"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": null,
+    "old_blob": null,
+    "new_path": "src/zeo_integrations/loops/py.typed",
+    "new_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+    "new_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "delivered_source": "original narrow adapter, tests or aggregate NOTICE authored for this slice"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": "packages/loops/src/zeo_integrations/loops/transport.py",
+    "old_blob": "50043bdd0e088e647ead454374294b3b1dea910b",
+    "new_path": "src/zeo_integrations/loops/transport.py",
+    "new_blob": "d7a8380f1ef83426a3ee40b4282cc2cf30a4fc96",
+    "new_sha256": "8941b66144c49f2e28b511221464e156adaa1a9ec3290a8a80fb39511573f070",
+    "delivered_source": "expanded zip e78cb9c3, aggregate/3.12 adaptation"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": "packages/loops/src/zeo_integrations/loops/webhooks.py",
+    "old_blob": "e9c45ea3adc395661353d3771081b3df4b2d4b3b",
+    "new_path": "src/zeo_integrations/loops/webhooks.py",
+    "new_blob": "b14ba9da97e6490bc2f41ed036ceadb3ef7a73d9",
+    "new_sha256": "b2ee6ecaf2f7885ed75827d449367306d6b599408e1db340c0a794e2b92ddf75",
+    "delivered_source": "expanded zip e78cb9c3, aggregate/3.12 adaptation"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": "packages/loops/tests/test_client.py",
+    "old_blob": "298cd8476492c44ed0404df6b75c66b99c4fb650",
+    "new_path": "tests/test_integrations/loops/test_client.py",
+    "new_blob": "c88d99b9cf6d54000afe74e6a27891f29e1ad29c",
+    "new_sha256": "cf1549a1af130460f40fa085c126b85335fa5f5787d015ef92718c1814352ada",
+    "delivered_source": "expanded zip e78cb9c3, aggregate/3.12 adaptation"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": null,
+    "old_blob": null,
+    "new_path": "tests/test_integrations/loops/test_mailing_lists_reader.py",
+    "new_blob": "66995add24afe3f979661d998bc6cd263203f9d3",
+    "new_sha256": "efa9932744eebd3afe58f475280b716246076d0a2922af04bb8d7742cd0fd035",
+    "delivered_source": "original narrow adapter, tests or aggregate NOTICE authored for this slice"
+  },
+  {
+    "old_repo": "zeroemployeeorg/zeointegrations",
+    "old_commit": "29d303262f620d6c97bfc3c5fdf5bc975fc1175b",
+    "old_path": "packages/loops/tests/test_webhooks.py",
+    "old_blob": "18cc5b8ec50ef37ff170f829e25301162d6b4d83",
+    "new_path": "tests/test_integrations/loops/test_webhooks.py",
+    "new_blob": "18cc5b8ec50ef37ff170f829e25301162d6b4d83",
+    "new_sha256": "e0b4833004777b18ed9cbbad3741c18afe88f78c648c20a1e1067793f69925fd",
+    "delivered_source": "expanded zip e78cb9c3, aggregate/3.12 adaptation"
+  },
+  {
+    "old_repo": null,
+    "old_commit": null,
+    "old_path": null,
+    "old_blob": null,
+    "new_path": "tests/test_integrations/loops/fixtures/mailing_lists_projection.json",
+    "new_blob": "d5df4efb61f292b4581baed07eba036a951efb9c",
+    "new_sha256": "14cc05eb32c71136ebe01f46489f59d0f11251567f3529f142bad9319a070e5d",
+    "delivered_source": "Original synthetic golden fixture for the existing host operation; no real provider/account data"
+  }
+]

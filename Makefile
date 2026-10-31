@@ -11,6 +11,7 @@ verify:
 	uv run --frozen python tools/verify_provider_tests.py
 	uv run --frozen python tools/verify_python_floor.py
 	uv build --offline --no-sources
+	uv run --frozen python tools/verify_loops_wheel.py
 	$(MAKE) -C packages/loops verify
 	$(MAKE) -C packages/kit verify
 	$(MAKE) -C packages/hubspot verify

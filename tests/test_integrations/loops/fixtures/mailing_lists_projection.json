@@ -1,0 +1,24 @@
+{
+  "operation_id": "loops.newsletter.list_mailing_lists",
+  "arguments": {},
+  "provider_method": "GET",
+  "provider_path": "/api/v1/lists",
+  "provider_response": [
+    {
+      "id": "list-one",
+      "name": "Fixture",
+      "description": null,
+      "isPublic": false
+    }
+  ],
+  "result": {
+    "mailing_lists": [
+      {
+        "id": "list-one",
+        "name": "Fixture",
+        "is_public": false
+      }
+    ]
+  },
+  "note": "Synthetic fixture only; no real account, subscriber or live response"
+}
