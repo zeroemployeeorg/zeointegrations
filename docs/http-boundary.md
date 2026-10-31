@@ -31,3 +31,10 @@ selected Loops operation, daily approvals, a service scheduler, Substack fencing
 a new Core ABI, installation, registration or consumer acceptance. Per-file
 provenance and the one local constructor correction are recorded in
 migrations/http-boundary.json.
+
+The facade compares the response origin and path with the requested destination;
+query serialization does not count as a redirect. Empty parameters preserve a
+query embedded in the URL. Nonempty parameters use HTTPX replacement semantics.
+Binary content remains bytes until the provider explicitly asks for text or JSON.
+Decoded backslashes in paths and non-string argument keys are refused before
+transport dispatch. Composition tests exercise the facade over HTTPX mocks.

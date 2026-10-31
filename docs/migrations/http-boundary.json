@@ -17,18 +17,18 @@
       "source_git_blob": "4e3399c2d131887862b4984e5250808ceff430fa",
       "source_sha256": "c9f0eb57bf91f00a694677a97e0ff2cd6c97c30d1d366a0005d0d9ef12435f51",
       "destination_path": "src/zeo_integrations/_http/runtime.py",
-      "destination_git_blob": "55c84163b1fad1e1191a58e92a2e59ff812c8f5d",
-      "destination_sha256": "40e8c0d31317b1a3ebac9dbc37e6905628eec39a517e255262bf5bc0137c36b7",
-      "adaptation": "Exact received implementation plus provenance header"
+      "destination_git_blob": "cebc62d75d9f1398eb30e2a6da2cb3be80ca2060",
+      "destination_sha256": "261b5856030e054374634d13849b8473b441c0b02fb4ab404dde06ae03be28e6",
+      "adaptation": "Exact received implementation plus provenance header; compare destination origin/path independently of encoded query; reject decoded backslash and non-string argument keys; decode text lazily so binary content remains available"
     },
     {
       "source_path": "src/zeo_integrations/_http/transport.py",
       "source_git_blob": "8e0617df9d5a8e6c0b56480f75685055b5d3e7f5",
       "source_sha256": "35fa93a4bc46667ccf40c1d2ab58fa599cea485e5ab8377154b979ba3565b8b4",
       "destination_path": "src/zeo_integrations/_http/transport.py",
-      "destination_git_blob": "3e9f61ce4eb4107148c7c3d6d25b2033c0ed1995",
-      "destination_sha256": "ab49a80139c0197d37252c0b714c707bf8f5ac4a52ffc9bd648928284f90cbb7",
-      "adaptation": "Exact received implementation plus provenance header; reject unbound/non-BaseTransport before HTTPX client construction"
+      "destination_git_blob": "8b3510b1b19ad67f48486f2fe87d388e2e3debec",
+      "destination_sha256": "2fc6a8012f34fbd38ef565c7af71f3e2c279ab67d8329e6f92e4deb584a79a3b",
+      "adaptation": "Exact received implementation plus provenance header; reject unbound/non-BaseTransport before HTTPX client construction; omit empty params when building HTTPX request to preserve an embedded query"
     },
     {
       "source_path": "src/zeo_integrations/_http/compatibility.py",
@@ -53,7 +53,8 @@
     "src/zeo_integrations/_http/NOTICE",
     "src/zeo_integrations/_http/py.typed",
     "tests/test_integrations/http_boundary/test_http_boundary_facade.py",
-    "docs/http-boundary.md"
+    "docs/http-boundary.md",
+    "tests/test_integrations/http_boundary/test_http_boundary_composed.py"
   ],
   "status": "Synthetic tests and copy provenance accompany this library increment; no live provider or consumer acceptance is implied."
 }

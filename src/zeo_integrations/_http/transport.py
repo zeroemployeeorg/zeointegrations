@@ -71,7 +71,7 @@ class HttpxTransport:
             wire = httpx.Request(
                 request.method,
                 request.url,
-                params=request.query,
+                params=request.query or None,
                 headers=headers,
                 json=request.json_body,
                 data=request.form_body,

@@ -77,8 +77,11 @@ class _Response:
         self.status_code = response.status
         self.headers = response.headers
         self.content = response.body
-        self.text = response.body.decode("utf-8")
         self.ok = 200 <= response.status < 300
+
+    @property
+    def text(self):
+        return self.content.decode("utf-8")
 
     def raise_for_status(self):
         if not self.ok:
@@ -111,7 +114,11 @@ def _url(value):
     if p.scheme != "https" or not p.hostname or p.username or p.password or p.fragment:
         raise IntegrationError("ORIGIN")
     decoded = unquote(p.path)
-    if "\\" in value or any(x in {".", ".."} for x in decoded.split("/")):
+    if (
+        "\\" in value
+        or "\\" in decoded
+        or any(x in {".", ".."} for x in decoded.split("/"))
+    ):
         raise IntegrationError("PATH")
     if any(ord(c) < 32 for c in unquote(value)):
         raise IntegrationError("PATH")
@@ -231,6 +238,8 @@ class Client:
         def check_keys(value):
             if isinstance(value, dict):
                 for k, v in value.items():
+                    if not isinstance(k, str):
+                        raise IntegrationError("ARGUMENT_KEY")
                     if k.lower() in {
                         "authorization",
                         "cookie",
@@ -377,7 +386,11 @@ class Client:
             raise IntegrationError("DEADLINE")
         if not isinstance(response, Response) or type(response.status) is not int:
             raise IntegrationError("RESPONSE")
-        if response.url != url or 300 <= response.status < 400:
+        if (
+            _url(response.url) != _url(url)
+            or (urlsplit(response.url).path or "/") != (urlsplit(url).path or "/")
+            or 300 <= response.status < 400
+        ):
             raise IntegrationError("REDIRECT")
         if not isinstance(response.body, bytes) or len(response.body) > self.max_bytes:
             raise IntegrationError("SIZE_LIMIT")
