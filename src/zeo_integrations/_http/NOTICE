@@ -1,0 +1,11 @@
+HTTP collection boundary — MIT
+Copyright 2026 Zero Employee Organizations.
+
+Copied from the operator-supplied expanded collection dated 2026-10-31.
+Archive SHA256:
+e78cb9c31fe534e500f3234ca626ebb577ae71a2c30b299e6a009f2c0f8752c8
+
+Source paths, received Git blobs, per-file hashes and local changes are in
+docs/migrations/http-boundary.json. Existing notices are retained.
+No VeyraX provider implementation, auth server, credential store or frontend
+is included in this boundary-only slice.
