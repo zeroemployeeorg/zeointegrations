@@ -69,3 +69,7 @@ Copyright (c) 2026 Zero Employee Organizations, MIT.
 Primary API references: docs.joinmastodon.org methods/instance, media, statuses
 and api/rate-limits; no implementation copied.
 See src/zeo_integrations/mastodon/NOTICE for full primary URLs.
+
+Shared Telegram receive/ACK client:
+Original MIT implementation, Copyright 2026 Zero Employee Organizations.
+Protocol provenance and client/Core boundaries: src/zeo_integrations/telegram/NOTICE.

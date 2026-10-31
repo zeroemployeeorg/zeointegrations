@@ -1,0 +1,13 @@
+Shared Telegram send/receive/ACK clients
+Copyright 2026 Zero Employee Organizations. SPDX-License-Identifier: MIT.
+
+Original implementation; no copied SDK code.
+The hosted request and response types are imported unchanged from the core
+library. This package adds no credential store, network transport, daemon,
+plugin entry point or dependency.
+
+Vendor references:
+https://core.telegram.org/bots/api#getupdates
+https://core.telegram.org/bots/api#sendmessage
+https://core.telegram.org/bots/api#inlinekeyboardbutton
+https://core.telegram.org/bots/api#answercallbackquery
