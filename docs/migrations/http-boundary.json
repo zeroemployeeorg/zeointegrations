@@ -1,0 +1,60 @@
+{
+  "archive_sha256": "e78cb9c31fe534e500f3234ca626ebb577ae71a2c30b299e6a009f2c0f8752c8",
+  "license": "MIT; Zero Employee Organizations source headers/notices retained",
+  "scope": "Shared HTTP boundary only; no provider registrations, UI or core contract changes",
+  "files": [
+    {
+      "source_path": "src/zeo_integrations/_http/__init__.py",
+      "source_git_blob": "2f6e89bef6e533c8b78b3463a03db49f34621977",
+      "source_sha256": "83f1326fc6d1dbe3443b0d8301b9ab5111c314472ab10d1dce3ded6bd7127374",
+      "destination_path": "src/zeo_integrations/_http/__init__.py",
+      "destination_git_blob": "b900cc95f9e056295318d5916dc093c5400bf1bb",
+      "destination_sha256": "105e19dd4d63e9857e9c2d57cc3aced7fc549f19a5ed3426cc1522caa4d04a31",
+      "adaptation": "Exact received implementation plus provenance header"
+    },
+    {
+      "source_path": "src/zeo_integrations/_http/runtime.py",
+      "source_git_blob": "4e3399c2d131887862b4984e5250808ceff430fa",
+      "source_sha256": "c9f0eb57bf91f00a694677a97e0ff2cd6c97c30d1d366a0005d0d9ef12435f51",
+      "destination_path": "src/zeo_integrations/_http/runtime.py",
+      "destination_git_blob": "cebc62d75d9f1398eb30e2a6da2cb3be80ca2060",
+      "destination_sha256": "261b5856030e054374634d13849b8473b441c0b02fb4ab404dde06ae03be28e6",
+      "adaptation": "Exact received implementation plus provenance header; compare destination origin/path independently of encoded query; reject decoded backslash and non-string argument keys; decode text lazily so binary content remains available"
+    },
+    {
+      "source_path": "src/zeo_integrations/_http/transport.py",
+      "source_git_blob": "8e0617df9d5a8e6c0b56480f75685055b5d3e7f5",
+      "source_sha256": "35fa93a4bc46667ccf40c1d2ab58fa599cea485e5ab8377154b979ba3565b8b4",
+      "destination_path": "src/zeo_integrations/_http/transport.py",
+      "destination_git_blob": "8b3510b1b19ad67f48486f2fe87d388e2e3debec",
+      "destination_sha256": "2fc6a8012f34fbd38ef565c7af71f3e2c279ab67d8329e6f92e4deb584a79a3b",
+      "adaptation": "Exact received implementation plus provenance header; reject unbound/non-BaseTransport before HTTPX client construction; omit empty params when building HTTPX request to preserve an embedded query"
+    },
+    {
+      "source_path": "src/zeo_integrations/_http/compatibility.py",
+      "source_git_blob": "dd0e8fe72f488f43049a7e2a9c8b660fe30e33b9",
+      "source_sha256": "b9af6c189e794d7168acc24174d0cc1ce0b370778c7a87c870609c11676b5ae1",
+      "destination_path": "src/zeo_integrations/_http/compatibility.py",
+      "destination_git_blob": "cfe45c67860a29ca854158e6f64783e88c911351",
+      "destination_sha256": "7b43ef5fe34af8757926afbdc4e4b30cd2f7c3662570b913acc61c0e30bdbfca",
+      "adaptation": "Exact received implementation plus provenance header"
+    },
+    {
+      "source_path": "tests/test_integrations/http_collection/test_execution.py",
+      "source_git_blob": "211b141ded146a5b47ad5939624439cacee79f64",
+      "source_sha256": "6afac0bf2a3e1e02eb1c8313bb82a44fe9598086df099cb534d29dd1f84ae246",
+      "destination_path": "tests/test_integrations/http_boundary/test_http_boundary_transport.py",
+      "destination_git_blob": "890fc246008e4efd32d3b9e8118f85c6e014f07c",
+      "destination_sha256": "a68cdd6511001c4b9951d733c03e7f8731de8cb5341a1ed7f92981e4849c44f5",
+      "adaptation": "Retain only first four provider-independent transport tests and their parametrisations; remove absent Amazon/IMAP imports; no provider/SDK tests silently claimed."
+    }
+  ],
+  "new_original_files": [
+    "src/zeo_integrations/_http/NOTICE",
+    "src/zeo_integrations/_http/py.typed",
+    "tests/test_integrations/http_boundary/test_http_boundary_facade.py",
+    "docs/http-boundary.md",
+    "tests/test_integrations/http_boundary/test_http_boundary_composed.py"
+  ],
+  "status": "Synthetic tests and copy provenance accompany this library increment; no live provider or consumer acceptance is implied."
+}
