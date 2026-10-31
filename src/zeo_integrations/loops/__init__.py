@@ -1,0 +1,76 @@
+"API-client-only Loops package. Importing never discovers credentials or connects."
+
+from .client import LoopsClient
+from .contacts import LoopsContactsClient
+from .models import (
+    Account,
+    ActivityCondition,
+    AudienceFilter,
+    AudienceUpdate,
+    Campaign,
+    Contact,
+    ContactSaved,
+    ContactUpdate,
+    DateRange,
+    EmailMessage,
+    EmailUpdate,
+    MailingList,
+    OptInCondition,
+    PropertyCondition,
+    Suppression,
+    ThemePage,
+    UploadedAsset,
+    UploadTicket,
+)
+from .transport import (
+    AuthenticationError,
+    ConflictError,
+    InvalidResponseError,
+    LoopsError,
+    LoopsRejected,
+    LoopsUnknown,
+    NotFoundError,
+    PayloadTooLargeError,
+    RateLimitError,
+    TransportError,
+)
+from .webhooks import VerifiedWebhook, WebhookVerificationError, verify_webhook
+
+LoopsApi = LoopsClient
+
+__all__ = [
+    "Account",
+    "ActivityCondition",
+    "AudienceFilter",
+    "AudienceUpdate",
+    "AuthenticationError",
+    "Campaign",
+    "Contact",
+    "ContactSaved",
+    "ContactUpdate",
+    "DateRange",
+    "EmailMessage",
+    "EmailUpdate",
+    "InvalidResponseError",
+    "LoopsClient",
+    "LoopsContactsClient",
+    "LoopsApi",
+    "LoopsError",
+    "LoopsRejected",
+    "LoopsUnknown",
+    "MailingList",
+    "NotFoundError",
+    "OptInCondition",
+    "PayloadTooLargeError",
+    "PropertyCondition",
+    "RateLimitError",
+    "ConflictError",
+    "Suppression",
+    "ThemePage",
+    "TransportError",
+    "UploadTicket",
+    "UploadedAsset",
+    "VerifiedWebhook",
+    "WebhookVerificationError",
+    "verify_webhook",
+]

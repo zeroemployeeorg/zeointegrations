@@ -1,0 +1,9 @@
+zeo-integration-loops is original MIT-licensed implementation in this project.
+API field/route references: Loops OpenAPI 1.22.6, official app.loops.so/openapi.json,
+received SHA256 518500f5f94aeba4c242d8474ce050b0607dd356f4875dc0279a6120df18a811.
+No Loops SDK, VeyraX code, credential store or live provider response is copied.
+Webhook verification uses raw-body HMAC; no provider response is copied.
+
+Aggregate copy of the original Loops library, with a separate read-only mailing-list
+projection adapter. Full per-file origins and blob identities are recorded in
+docs/migrations/loops-aggregate-lists.json. No credentials or live responses copied.

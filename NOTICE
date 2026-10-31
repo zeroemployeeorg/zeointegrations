@@ -81,3 +81,13 @@ e78cb9c31fe534e500f3234ca626ebb577ae71a2c30b299e6a009f2c0f8752c8
 Only shared _http code and provider-independent synthetic tests are included;
 no provider port, credential store or frontend code. Per-file source/destination
 blobs and local constructor guard: docs/migrations/http-boundary.json.
+
+Aggregate Loops library and mailing-list reader: original MIT implementation
+from this repository's packages/loops at29d303262f620d6c97bfc3c5fdf5bc975fc1175b,
+with aggregate/Python3.12 adaptations from source archive SHA256
+e78cb9c31fe534e500f3234ca626ebb577ae71a2c30b299e6a009f2c0f8752c8.
+The narrow list-only projection and acceptance controls are original
+Copyright2026 Zero Employee Organizations, MIT. No credentials/live responses
+or proprietary service code copied. Exact paths and old/new blob provenance:
+docs/migrations/loops-aggregate-lists.json; provider notice retained in
+src/zeo_integrations/loops/NOTICE. Historical standalone packages are unchanged.
