@@ -193,26 +193,38 @@ class TestClientConstruction:
 @pytest.mark.parametrize(
     "origin",
     [
-        "http://bsky.social", "https://unapproved.example", "https://bsky.social.evil",
-        "https://user:pw@bsky.social", "https://bsky.social:444", "https://bsky.social/path",
-        "https://bsky.social?redirect=evil", "https://bsky.social#evil", "https://bsky.social\t",
+        "http://bsky.social",
+        "https://unapproved.example",
+        "https://bsky.social.evil",
+        "https://user:pw@bsky.social",
+        "https://bsky.social:444",
+        "https://bsky.social/path",
+        "https://bsky.social?redirect=evil",
+        "https://bsky.social#evil",
+        "https://bsky.social\t",
     ],
 )
 def test_f1_refused_origin_never_receives_credentials(origin: str) -> None:
     session = MagicMock()
     with pytest.raises(ValueError, match="approved HTTPS"):
-        BlueskyClient(service_url=origin, session=session).create_session("alice", "fake")
+        BlueskyClient(service_url=origin, session=session).create_session(
+            "alice", "fake"
+        )
     session.post.assert_not_called()
 
 
 def test_f1_checks_mutated_origin_and_disables_both_post_redirects() -> None:
     session = MagicMock()
-    session.post.return_value = _mock_response(200, {"accessJwt": "fake", "uri": "at://ok"})
+    session.post.return_value = _mock_response(
+        200, {"accessJwt": "fake", "uri": "at://ok"}
+    )
     client = BlueskyClient(session=session)
     client.create_session("alice", "fake")
     client.create_post_record(repo="did:plc:alice", text="text", access_jwt="fake")
     assert session.post.call_count == 2
-    assert all(call.kwargs["allow_redirects"] is False for call in session.post.call_args_list)
+    assert all(
+        call.kwargs["allow_redirects"] is False for call in session.post.call_args_list
+    )
     client.service_url = "http://bsky.social"
     with pytest.raises(ValueError, match="approved HTTPS"):
         client.create_session("alice", "fake")

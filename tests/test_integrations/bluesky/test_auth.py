@@ -319,8 +319,14 @@ class TestBuildClient:
 def test_f1_credential_file_origin_cannot_select_a_password_destination(
     creds_relpath: Path, fake_factory: MagicMock, origin: str
 ) -> None:
-    creds_relpath.write_text(json.dumps({"identifier": "alice", "app_password": "fake", "service_url": origin}))
-    provider = BlueskyAuthProvider(credentials_file=str(creds_relpath), session_client_factory=fake_factory)
+    creds_relpath.write_text(
+        json.dumps(
+            {"identifier": "alice", "app_password": "fake", "service_url": origin}
+        )
+    )
+    provider = BlueskyAuthProvider(
+        credentials_file=str(creds_relpath), session_client_factory=fake_factory
+    )
     result = provider.authenticate()
     assert result.success is False
     fake_factory.assert_not_called()
@@ -330,7 +336,9 @@ def test_f2_existing_credentials_directory_is_private_before_saving(
     creds_relpath: Path, fake_factory: MagicMock
 ) -> None:
     creds_relpath.parent.chmod(0o755)
-    provider = BlueskyAuthProvider(credentials_file=str(creds_relpath), session_client_factory=fake_factory)
+    provider = BlueskyAuthProvider(
+        credentials_file=str(creds_relpath), session_client_factory=fake_factory
+    )
     result = provider.authenticate(identifier="alice", app_password="fake")
     assert result.success is True
     assert stat.S_IMODE(creds_relpath.parent.stat().st_mode) == 0o700
@@ -338,14 +346,22 @@ def test_f2_existing_credentials_directory_is_private_before_saving(
 
 
 @pytest.mark.parametrize("relative", [False, True])
-def test_f2_rejects_outside_credential_paths(creds_relpath: Path, relative: bool) -> None:
-    value = "../../outside.json" if relative else str(creds_relpath.parent.parent.parent / "outside.json")
+def test_f2_rejects_outside_credential_paths(
+    creds_relpath: Path, relative: bool
+) -> None:
+    value = (
+        "../../outside.json"
+        if relative
+        else str(creds_relpath.parent.parent.parent / "outside.json")
+    )
     with pytest.raises(ValueError, match="configuration directory"):
         BlueskyAuthProvider(credentials_file=value)
     assert not (creds_relpath.parent.parent.parent / "outside.json").exists()
 
 
-def test_f2_symlink_escape_cannot_read_or_overwrite_outside_file(creds_relpath: Path) -> None:
+def test_f2_symlink_escape_cannot_read_or_overwrite_outside_file(
+    creds_relpath: Path,
+) -> None:
     outside = creds_relpath.parent.parent.parent / "outside.json"
     outside.write_text("unchanged")
     creds_relpath.symlink_to(outside)

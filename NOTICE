@@ -154,3 +154,8 @@ Notion at tests/test_integrations/support/fake_subprocess_runner.py.
 Recovered Notion and Bluesky source/tests from the same frozen Core commit.
 Exact per-file blobs and travelling test ownership:
 docs/migrations/core-7c9923e6-batch2.json and packaged provider NOTICE files.
+
+Recovered Bluesky/Notion security follow-up, 9 Nov 2026: Council F1-F4 and
+Architect ans_76c036edcf1f1881. Original Core attribution and frozen migration
+provenance describe PR33; subsequent local behavior changes and regressions
+are documented in docs/bluesky-recovery-security.md. MIT terms retained.

@@ -35,3 +35,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+9 Nov 2026 recovery security follow-up: Council F1-F4 and Architect
+ans_76c036edcf1f1881 authorize local security changes after byte-faithful PR33.
+See docs/bluesky-recovery-security.md and the follow-up PR for changed behavior.
+Original source attribution and MIT terms above remain intact.

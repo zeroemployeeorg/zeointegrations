@@ -267,15 +267,25 @@ def test_hosted_methods_refuse_when_no_custody_dispatcher_exists() -> None:
         broker.refresh_custodied_grant(refresh_ref=SecretRef(handle="opaque-ref"))
 
 
-
 def test_f3_cleanup_delete_failure_keeps_normalized_custody_error() -> None:
     import traceback
 
     broker, sdk, store = _broker()
-    store.put.side_effect = [SecretRef(handle="access-handle"), RuntimeError("REFRESH_SECRET_CANARY")]
+    store.put.side_effect = [
+        SecretRef(handle="access-handle"),
+        RuntimeError("REFRESH_SECRET_CANARY"),
+    ]
     store.delete.side_effect = RuntimeError("ACCESS_SECRET_CANARY")
-    sdk.oauth.token.return_value = {"access_token": "access", "refresh_token": "refresh", "bot_id": "bot-1", "workspace_id": "ws-1"}
-    with patch.dict(os.environ, {"NOTION_OAUTH_CLIENT_ID": "id", "NOTION_OAUTH_CLIENT_SECRET": "fake"}):
+    sdk.oauth.token.return_value = {
+        "access_token": "access",
+        "refresh_token": "refresh",
+        "bot_id": "bot-1",
+        "workspace_id": "ws-1",
+    }
+    with patch.dict(
+        os.environ,
+        {"NOTION_OAUTH_CLIENT_ID": "id", "NOTION_OAUTH_CLIENT_SECRET": "fake"},
+    ):
         with pytest.raises(NotionAPIError, match="custody") as error:
             broker.exchange(code="code")
     assert error.value.code == "oauth_custody_failed"

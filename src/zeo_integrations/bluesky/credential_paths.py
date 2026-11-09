@@ -118,11 +118,15 @@ def confined_credentials_path(value: str) -> str:
     if not target.is_absolute():
         target = base / target
     if base.is_symlink():
-        raise ValueError("Bluesky credential path is outside its configuration directory")
+        raise ValueError(
+            "Bluesky credential path is outside its configuration directory"
+        )
     resolved_base = base.resolve()
     resolved = target.resolve()
     if resolved == resolved_base or not resolved.is_relative_to(resolved_base):
-        raise ValueError("Bluesky credential path is outside its configuration directory")
+        raise ValueError(
+            "Bluesky credential path is outside its configuration directory"
+        )
     return str(resolved)
 
 
