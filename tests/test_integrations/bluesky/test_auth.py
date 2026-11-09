@@ -128,19 +128,21 @@ class TestBlueskyAuthProviderBasics:
         assert result.error is not None
         assert "network exploded" in result.error
 
-    def test_custom_service_url_is_used(
+    def test_custom_service_url_is_refused_before_credentials_dispatch(
         self, fake_factory: MagicMock, creds_relpath: Path
     ) -> None:
         provider = BlueskyAuthProvider(
             credentials_file=str(creds_relpath), session_client_factory=fake_factory
         )
-        provider.authenticate(
+        result = provider.authenticate(
             identifier="alice",
             app_password="pw",  # noqa: S106
             service_url="https://custom.pds.example",
         )
 
-        fake_factory.assert_called_once_with("https://custom.pds.example")
+        assert result.success is False
+        fake_factory.assert_not_called()
+        assert not creds_relpath.exists()
 
 
 class TestBlueskyAuthProviderCredentialPersistence:
