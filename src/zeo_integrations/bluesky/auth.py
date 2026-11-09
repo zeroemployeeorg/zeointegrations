@@ -32,6 +32,7 @@ from zeo_core.core.logging import LOG_LEVELS, LogLevel, get_logger
 from zeo_core.integrations.core import AuthResult, BaseAuthProvider
 
 from zeo_integrations.bluesky.credential_paths import (
+    confined_credentials_path,
     create_directory_with_fallback,
     get_file_info_with_fallback,
     read_json_with_fallback,
@@ -89,6 +90,8 @@ class BlueskyAuthProvider(BaseAuthProvider):
                 `(service_url) -> _BlueskySessionClient`-shaped callable, for
                 testing. Defaults to the real HTTP-backed client.
         """
+        if credentials_file is not None:
+            credentials_file = confined_credentials_path(credentials_file)
         super().__init__(credentials_file=credentials_file, log_level=log_level)
         self.identifier: str | None = None
         self.app_password: str | None = None
@@ -121,11 +124,12 @@ class BlueskyAuthProvider(BaseAuthProvider):
     def _build_client(self, service_url: str) -> _BlueskySessionClient:
         """Build (or fetch, via the injected factory) a session client for
         `service_url`."""
+        from zeo_integrations.bluesky.client import BlueskyClient, checked_service_url
+
+        service_url = checked_service_url(service_url)
         if self._session_client_factory is not None:
             client: _BlueskySessionClient = self._session_client_factory(service_url)
             return client
-
-        from zeo_integrations.bluesky.client import BlueskyClient
 
         return BlueskyClient(service_url=service_url)
 
@@ -275,6 +279,10 @@ class BlueskyAuthProvider(BaseAuthProvider):
             logger.debug("No credentials file specified")
             return None
 
+        try:
+            self.credentials_file = confined_credentials_path(self.credentials_file)
+        except (ValueError, OSError):
+            return None
         file_info = get_file_info_with_fallback(self.credentials_file)
         if not file_info.ok or not file_info.exists:
             logger.debug(f"Credentials file does not exist: {self.credentials_file}")
@@ -312,6 +320,10 @@ class BlueskyAuthProvider(BaseAuthProvider):
         if not self.identifier or not self.app_password or not self.credentials_file:
             return False
 
+        try:
+            self.credentials_file = confined_credentials_path(self.credentials_file)
+        except (ValueError, OSError):
+            return False
         directory_path = str(Path(self.credentials_file).parent)
         dir_result = create_directory_with_fallback(directory_path, exist_ok=True)
         if not dir_result.ok:
@@ -319,6 +331,11 @@ class BlueskyAuthProvider(BaseAuthProvider):
                 f"Failed to create credentials directory {directory_path}: "
                 f"{dir_result.error}"
             )
+            return False
+
+        try:
+            Path(directory_path).chmod(0o700)
+        except OSError:
             return False
 
         credentials: dict[str, Any] = {

@@ -31,6 +31,7 @@ canonical schema definitions, not read off Postiz's TypeScript.
 
 from datetime import UTC, datetime
 from typing import Any
+from urllib.parse import urlsplit
 
 import requests
 from zeo_core.core.logging import get_logger
@@ -38,6 +39,32 @@ from zeo_core.core.logging import get_logger
 logger = get_logger(__name__)
 
 _TIMEOUT_SECONDS = 30.0
+_MAX_ERROR_TEXT = 256
+_ALLOWED_SERVICE_HOSTS = frozenset({"bsky.social"})
+
+
+def checked_service_url(value: str) -> str:
+    """Refuse unapproved credential destinations before constructing a request."""
+    if not isinstance(value, str):
+        raise ValueError("Bluesky service URL is not an approved HTTPS origin")
+    try:
+        parsed = urlsplit(value)
+        allowed = (
+            parsed.scheme == "https"
+            and parsed.hostname in _ALLOWED_SERVICE_HOSTS
+            and parsed.port in {None, 443}
+            and parsed.username is None
+            and parsed.password is None
+            and parsed.path in {"", "/"}
+            and not parsed.query
+            and not parsed.fragment
+            and not any(char.isspace() for char in value)
+        )
+    except (ValueError, TypeError):
+        allowed = False
+    if not allowed:
+        raise ValueError("Bluesky service URL is not an approved HTTPS origin")
+    return "https://bsky.social"
 
 
 class BlueskyAPIError(Exception):
@@ -71,24 +98,29 @@ class BlueskyClient:
                 satisfying the same `.post()` surface), for testing.
             timeout: Per-request timeout in seconds.
         """
-        self.service_url = service_url.rstrip("/")
+        self.service_url = checked_service_url(service_url)
         self._session = session or requests.Session()
         self.timeout = timeout
         self._access_jwt: str | None = None
 
     def _xrpc_url(self, method: str) -> str:
-        return f"{self.service_url}/xrpc/{method}"
+        return f"{checked_service_url(self.service_url)}/xrpc/{method}"
 
     def _raise_for_error(self, response: requests.Response) -> None:
-        if response.status_code < 400:
+        if 200 <= response.status_code < 300:
             return
         try:
             body = response.json()
-            message = body.get("message") or body.get("error") or response.text
+            message = (
+                body.get("message") or body.get("error") or response.text
+                if isinstance(body, dict)
+                else response.text
+            )
         except ValueError:
             message = response.text
         raise BlueskyAPIError(
-            f"AT Protocol request failed ({response.status_code}): {message}",
+            f"AT Protocol request failed ({response.status_code}): "
+            f"{str(message)[:_MAX_ERROR_TEXT]}",
             status=response.status_code,
         )
 
@@ -110,6 +142,7 @@ class BlueskyClient:
             self._xrpc_url("com.atproto.server.createSession"),
             json={"identifier": identifier, "password": password},
             timeout=self.timeout,
+            allow_redirects=False,
         )
         self._raise_for_error(response)
         session: dict[str, Any] = response.json()
@@ -162,6 +195,7 @@ class BlueskyClient:
             },
             headers={"Authorization": f"Bearer {access_jwt}"},
             timeout=self.timeout,
+            allow_redirects=False,
         )
         self._raise_for_error(response)
         result: dict[str, Any] = response.json()

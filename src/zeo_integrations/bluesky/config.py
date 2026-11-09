@@ -118,7 +118,11 @@ class BlueskyConfigProvider(BaseConfigProvider):
         that check to auth time.
         """
         service_url = config.get("service_url")
-        if not service_url or not str(service_url).strip():
-            self.logger.error("Bluesky service_url must not be empty")
+        from zeo_integrations.bluesky.client import checked_service_url
+
+        try:
+            checked_service_url(service_url)
+        except (ValueError, TypeError):
+            self.logger.error("Bluesky service_url must be an approved HTTPS origin")
             return False
         return True

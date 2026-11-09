@@ -188,3 +188,57 @@ class TestClientConstruction:
         client = BlueskyClient()
         assert isinstance(client._session, requests.Session)
         assert client.service_url == "https://bsky.social"
+
+
+@pytest.mark.parametrize(
+    "origin",
+    [
+        "http://bsky.social", "https://unapproved.example", "https://bsky.social.evil",
+        "https://user:pw@bsky.social", "https://bsky.social:444", "https://bsky.social/path",
+        "https://bsky.social?redirect=evil", "https://bsky.social#evil", "https://bsky.social\t",
+    ],
+)
+def test_f1_refused_origin_never_receives_credentials(origin: str) -> None:
+    session = MagicMock()
+    with pytest.raises(ValueError, match="approved HTTPS"):
+        BlueskyClient(service_url=origin, session=session).create_session("alice", "fake")
+    session.post.assert_not_called()
+
+
+def test_f1_checks_mutated_origin_and_disables_both_post_redirects() -> None:
+    session = MagicMock()
+    session.post.return_value = _mock_response(200, {"accessJwt": "fake", "uri": "at://ok"})
+    client = BlueskyClient(session=session)
+    client.create_session("alice", "fake")
+    client.create_post_record(repo="did:plc:alice", text="text", access_jwt="fake")
+    assert session.post.call_count == 2
+    assert all(call.kwargs["allow_redirects"] is False for call in session.post.call_args_list)
+    client.service_url = "http://bsky.social"
+    with pytest.raises(ValueError, match="approved HTTPS"):
+        client.create_session("alice", "fake")
+    assert session.post.call_count == 2
+
+
+def test_f1_redirect_is_refused_instead_of_used_as_a_session() -> None:
+    session = MagicMock()
+    session.post.return_value = _mock_response(302, {"message": "Moved"})
+    with pytest.raises(BlueskyAPIError) as error:
+        BlueskyClient(session=session).create_session("alice", "fake")
+    assert error.value.status == 302
+    session.post.assert_called_once()
+    assert session.post.call_args.kwargs["allow_redirects"] is False
+
+
+@pytest.mark.parametrize("json_error", [False, True])
+def test_f4_server_error_diagnostic_is_bounded(json_error: bool) -> None:
+    session = MagicMock()
+    response = _mock_response(500, {"message": "x" * 100_000})
+    response.text = "x" * 100_000
+    if json_error:
+        response.json.side_effect = ValueError("not json")
+    session.post.return_value = response
+    with pytest.raises(BlueskyAPIError) as error:
+        BlueskyClient(session=session).create_session("alice", "fake")
+    assert len(str(error.value)) < 320
+    assert str(error.value).endswith("x" * 256)
+    assert error.value.status == 500

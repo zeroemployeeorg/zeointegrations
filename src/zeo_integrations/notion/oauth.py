@@ -181,9 +181,13 @@ class NotionOAuthBroker:
             )
         except Exception:
             if access_ref is not None:
-                self._secret_store.delete(
-                    ref=access_ref, organization_id=self._organization_id
-                )
+                try:
+                    self._secret_store.delete(
+                        ref=access_ref, organization_id=self._organization_id
+                    )
+                except Exception:
+                    # A cleanup failure must not replace the normalized custody error.
+                    pass
             raise NotionAPIError(
                 "Notion OAuth credentials could not be placed in custody",
                 code="oauth_custody_failed",
