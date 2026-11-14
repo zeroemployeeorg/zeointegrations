@@ -53,8 +53,15 @@ class TwilioUnknownOutcome(Exception):
 class TwilioListError(Exception):
     """A failed or incomplete read, never an empty successful listing."""
 
-    def __init__(self) -> None:
-        super().__init__("Twilio inbound listing failed or is incomplete")
+    def __init__(self, reason: str = "inbound_list_failed") -> None:
+        if reason not in {
+            "inbound_list_failed",
+            "inbound_window_truncated",
+            "inbound_message_pending",
+        }:
+            raise ValueError("Invalid inbound listing failure reason")
+        self.reason = reason
+        super().__init__(reason)
 
 
 def _account(value: str) -> bool:
@@ -154,7 +161,7 @@ class WhatsAppClient:
                     raise ValueError("Provider response exceeds limit")
             try:
                 payload = json.loads(raw)
-            except (ValueError, UnicodeError):
+            except (ValueError, UnicodeError, RecursionError):
                 payload = None
             return response.status_code, payload
 
@@ -258,8 +265,7 @@ class WhatsAppClient:
             for page in range(max_pages):
                 params = {
                     "To": to_number,
-                    "DateSent": ">="
-                    + date_sent_after.astimezone(UTC).date().isoformat(),
+                    "DateSent>": date_sent_after.astimezone(UTC).date().isoformat(),
                     "PageSize": str(_PAGE_SIZE),
                     "Page": str(page),
                 }
@@ -274,6 +280,13 @@ class WhatsAppClient:
                 for item in messages:
                     if not isinstance(item, dict):
                         raise ValueError("Invalid message")
+                    if (
+                        item.get("account_sid") == self._credentials.account_sid
+                        and item.get("to") == to_number
+                        and item.get("direction") == "inbound"
+                        and item.get("status") == "receiving"
+                    ):
+                        raise TwilioListError("inbound_message_pending")
                     media = _message_fields(
                         item.get("sid"),
                         item.get("from"),
@@ -288,7 +301,10 @@ class WhatsAppClient:
                         or item.get("status") != "received"
                     ):
                         raise ValueError("Invalid inbound identity")
-                    sent = parsedate_to_datetime(item["date_sent"])
+                    raw_date = item.get("date_sent")
+                    if not isinstance(raw_date, str):
+                        raise ValueError("Invalid sent timestamp")
+                    sent = parsedate_to_datetime(raw_date)
                     if sent.tzinfo is None:
                         raise ValueError("Invalid sent timestamp")
                     if sent < date_sent_after or sent > now:
@@ -362,4 +378,4 @@ class WhatsAppClient:
             OverflowError,
         ):
             raise TwilioListError() from None
-        raise TwilioListError()
+        raise TwilioListError("inbound_window_truncated")

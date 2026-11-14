@@ -151,7 +151,7 @@ class WhatsAppClientTests(unittest.TestCase):
         def handle(request):
             self.assertEqual(request.url.params["To"], SENDER)
             self.assertEqual(request.url.params["PageSize"], "50")
-            self.assertEqual(request.url.params["DateSent"], ">=2026-01-02")
+            self.assertEqual(request.url.params["DateSent>"], "2026-01-02")
             return httpx.Response(
                 200, json={"messages": [self.inbound()], "next_page_uri": None}
             )
@@ -169,6 +169,11 @@ class WhatsAppClientTests(unittest.TestCase):
             {"messages": [self.inbound()]},
             {"messages": [self.inbound(to=RECIPIENT)], "next_page_uri": None},
             {"messages": [self.inbound(date_sent=None)], "next_page_uri": None},
+            {"messages": [self.inbound(date_sent=123)], "next_page_uri": None},
+            {
+                "messages": [self.inbound(date_sent={"date": "invalid"})],
+                "next_page_uri": None,
+            },
             {
                 "messages": [self.inbound()],
                 "next_page_uri": "https://example.invalid/keys",
@@ -200,7 +205,7 @@ class WhatsAppClientTests(unittest.TestCase):
                     + urlencode(
                         {
                             "To": SENDER,
-                            "DateSent": ">=2026-01-02",
+                            "DateSent>": "2026-01-02",
                             "PageSize": "50",
                             "Page": "1",
                             "PageToken": "PAtest",
@@ -228,7 +233,7 @@ class WhatsAppClientTests(unittest.TestCase):
             + urlencode(
                 {
                     "To": SENDER,
-                    "DateSent": ">=2026-01-02",
+                    "DateSent>": "2026-01-02",
                     "PageSize": "50",
                     "Page": "1",
                     "PageToken": "PAtest",
@@ -240,5 +245,56 @@ class WhatsAppClientTests(unittest.TestCase):
                 200, json={"messages": [self.inbound()], "next_page_uri": continuation}
             )
         )
-        with self.assertRaises(TwilioListError):
+        with self.assertRaises(TwilioListError) as caught:
             client.inbound_list(SENDER, NOW - timedelta(hours=1), now=NOW, max_pages=1)
+        self.assertEqual(caught.exception.reason, "inbound_window_truncated")
+
+    def test_deep_json_write_is_unknown_and_list_is_typed_failure(self):
+        raw = ("[" * 2000 + "]" * 2000).encode()
+        client = self.client(lambda request: httpx.Response(201, content=raw))
+        with self.assertRaises(TwilioUnknownOutcome):
+            client.send_text(SENDER, RECIPIENT, "hello")
+        client = self.client(lambda request: httpx.Response(200, content=raw))
+        with self.assertRaises(TwilioListError):
+            client.inbound_list(SENDER, NOW - timedelta(hours=1), now=NOW)
+
+    def test_receiving_message_is_explicit_pending_without_partial_rows(self):
+        payload = {
+            "messages": [
+                self.inbound(),
+                self.inbound(status="receiving", date_sent=None),
+            ],
+            "next_page_uri": None,
+        }
+        client = self.client(lambda request: httpx.Response(200, json=payload))
+        with self.assertRaises(TwilioListError) as caught:
+            client.inbound_list(SENDER, NOW - timedelta(hours=1), now=NOW)
+        self.assertEqual(caught.exception.reason, "inbound_message_pending")
+
+    def test_documented_percent_encoded_continuation_uses_native_filter(self):
+        # Native wire spelling from the Twilio Messages resource documentation,
+        # deliberately not generated from the implementation's request params.
+        native_next = (
+            f"/2010-04-01/Accounts/{ACCOUNT}/Messages.json?"
+            "To=whatsapp%3A%2B15005550006&DateSent%3E=2026-01-02&"
+            "PageSize=50&Page=1&PageToken=PAMMcccccccccccccccccccccccccccccccc"
+        )
+        requests = []
+
+        def handle(request):
+            requests.append(request)
+            self.assertEqual(request.url.params["DateSent>"], "2026-01-02")
+            self.assertNotIn("DateSent", request.url.params)
+            if len(requests) == 1:
+                return httpx.Response(
+                    200,
+                    json={"messages": [self.inbound()], "next_page_uri": native_next},
+                )
+            self.assertEqual(request.url.params["PageToken"], "PAMM" + "c" * 32)
+            return httpx.Response(200, json={"messages": [], "next_page_uri": None})
+
+        rows = self.client(handle).inbound_list(
+            SENDER, NOW - timedelta(hours=1), now=NOW
+        )
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(len(requests), 2)
