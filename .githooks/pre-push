@@ -1,0 +1,11 @@
+#!/bin/sh
+# No tests, builds or credential reads. Reject main updates and deletions.
+set -eu
+while read -r local_ref local_sha remote_ref remote_sha; do
+    case "$remote_ref" in
+        refs/heads/main)
+            printf '%s\n' 'Push refused: main requires the reviewed merge process.' >&2
+            exit 1
+            ;;
+    esac
+done

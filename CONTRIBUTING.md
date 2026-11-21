@@ -89,8 +89,10 @@ parent hook's repository context cannot leak into another checkout. Run root
 wall-clock deadline below 180 seconds. Missing tools/cache, a timeout or a failed
 check stops the backup push; never substitute a full suite or bypass a hook.
 Prepare the approved tools and frozen cache separately before the quick check.
-This repository currently has no installed pre-push hook: these are required
-maintainer checks, not a claim that an automatic WIP mechanism is installed.
+`make hooks` installs the tracked lightweight main-push guard without replacing
+an existing hook or changing Git configuration. `make doctor` reports its
+installation status. The guard runs no tests or builds: the required maintainer
+checks above still apply, and no automatic WIP qualification is claimed.
 
 Every other push requires full own-repository `make setup` and `make verify` on
 the exact candidate head in the maintainer's own lane (ENG-UK by default).

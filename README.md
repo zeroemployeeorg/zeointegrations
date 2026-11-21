@@ -21,6 +21,14 @@ the collection registers no duplicate plugins. The historical `packages/`
 and `releases/` trees preserve earlier APIs and release evidence, not additional
 future distribution targets.
 
+## Development
+
+Start with `make help` for the first-time guide and `make help-all` for every
+entry point. `make doctor` checks prerequisites without changing anything;
+`make hooks` installs the lightweight main-push guard. See
+[development instructions](docs/development.md) for setup, the complete
+`make verify` gate, tool pins and build-host requirements.
+
 ## Current families
 
 These statuses describe implemented source coverage, not deployed credentials,
