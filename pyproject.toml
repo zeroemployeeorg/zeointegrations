@@ -29,6 +29,7 @@ jupytext = ["jupytext>=1.16", "nbformat>=5.10"]
 ffmpeg = ["ffmpeg-zeo>=0.1"]
 pandoc = ["pypandoc", "beautifulsoup4"]
 llms = ["tiktoken", "openai", "anthropic"]
+voice = ["zeocore>=0.51.0,<1"]
 
 [dependency-groups]
 # Lock the existing build backend and its closure for CI reproducibility.

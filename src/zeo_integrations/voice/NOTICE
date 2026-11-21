@@ -1,0 +1,49 @@
+zeo_integrations.voice (zeo-integrations)
+
+Licence: the files listed below are derived from RasaHQ/rasa-community-resources and are
+licensed under the Apache License, Version 2.0. The text is src/zeo_integrations/voice/LICENSE,
+byte-identical to the upstream repository-root LICENSE (git blob 261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64).
+The rest of the zeo-integrations repository is MIT (see the repository LICENSE). The derived files
+are NOT relicensed.
+
+Source: RasaHQ/rasa-community-resources, commit 9f85e2be9398f23dc06b30f4b8f1f53964627251,
+directory patterns/voice-vendor-router/voicerouter/providers/, plus the repository-root LICENSE.
+The files were first adapted in zeocore (pull request closed without merge, branch head
+841689b90f74362424e83e5d61ec004031c40168) and relocated here; the zeocore NOTICE table for that head
+records the same upstream blobs.
+
+Copyright: the upstream repository has no NOTICE file and none of the source files carries a copyright or
+licence header. No copyright line is stated or invented here.
+
+Modifications (Apache-2.0 section 4(b)): every file listed as modified was changed from its source. Each
+carries a header comment naming the source commit and path. The changes are:
+(a) the module-name rewrite (voicerouter.X to zeo_core.voice.X, then zeo_core.voice.providers.X to
+    zeo_integrations.voice.X; import statements only), ruff import order and line wrapping;
+(b) the framework (rasa) engine classes and event types are replaced by the standalone types in
+    zeo_core.voice.engine; the aiohttp session in _http_tts.py is replaced by httpx, a caller may inject
+    the client; structlog is replaced by the standard-library shim _log.py;
+(c) the API key is a constructor argument and is never read from the environment; the websockets and
+    faster-whisper packages and numpy are imported when used and are not dependencies of this
+    distribution, a missing one is reported as "not configured here";
+(d) speechmatics.py carries only the ASR class (the upstream module also held a TTS class); the
+    vendor CATALOGUE in providers/__init__.py is not carried;
+(e) new in this repository: a configured endpoint must start with https:// (OpenAI text-to-speech) or
+    wss:// (Speechmatics ASR), with its own test.
+
+Names: "Rasa" appears only to identify provenance and compatibility. No endorsement by, or affiliation
+with, the upstream owner is claimed.
+
+Third-party: no third-party or vendored code was found in the copied files. audioop-lts (PSF-2.0) is a
+dependency of zeocore 0.53.6 on Python 3.13 and later; it is not distributed here.
+
+Per-file table
+upstream path | upstream blob | path here | sha256 | change
+voicerouter/providers/__init__.py | 984e0abc6ec35ed4df161bf410c54d0e3d55cd7d | src/zeo_integrations/voice/__init__.py | 792be966dd0d939b0e82b0f2dfee23d24a36513adb770a1a49443da3ba390966 | modified
+voicerouter/providers/_http_tts.py | df1b5bfd04543824d94ad19cc838c224f38bed78 | src/zeo_integrations/voice/_http_tts.py | 15dc1e19d5e0de5250ba0a8b49c839709580e78a7b5301b2f897c3875a80b964 | modified
+voicerouter/providers/_local_asr.py | 3267849b3424abcb1b899d3c05a663d1cd1c66a2 | src/zeo_integrations/voice/_local_asr.py | 43f14d98844172a3abb4a7b91f61c1e984793ee84b78aae55b25f3ad16db9277 | modified
+voicerouter/providers/openai.py | 999f814d46e440fe5d06f2e17419bee0501a0de8 | src/zeo_integrations/voice/openai.py | 007de79afde7a34fc86bf2947e67f7165459820c5cbdeecbe08e0f29be4b4a17 | modified (endpoint check)
+voicerouter/providers/speechmatics.py | 14a4ec608f08093a0dfa7e2cacf9eda7aff186de | src/zeo_integrations/voice/speechmatics.py | ab1074ff2a201e3dc267f7399de41a72ac254538a8bbbb05b6dfc9854347e8d0 | modified (ASR only, endpoint check)
+voicerouter/providers/whisper.py | d996574260ccbf1fc7063eae452e9e1ab72fe987 | src/zeo_integrations/voice/whisper.py | d626c4ddcdc2c92644658f88e2acfe67e9e3dafa4bfdd82531122ce4314081db | modified
+(none) | - | src/zeo_integrations/voice/_log.py | 9cdad1f41bbafa3fb27cd5dd4723475dd8f8542eaecc201bae470efe2b2287f6 | new; copy of zeocore's stdlib logging shim (MIT), not Apache-derived
+LICENSE | 261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64 | src/zeo_integrations/voice/LICENSE | c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4 | byte-identical
+Tests: tests/test_integrations/voice/test_providers.py (derived, sha256 312cb259...4815, modified from the zeocore test of the same name; no upstream counterpart) and test_endpoint.py (new).

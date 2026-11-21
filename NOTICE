@@ -159,3 +159,11 @@ Bluesky/Notion security follow-up of 9 November 2026 after the source recovery.
 Original source attribution and frozen migration provenance remain intact;
 subsequent local behavior changes and regressions are documented in
 docs/bluesky-recovery-security.md. MIT terms retained.
+
+Voice engines (zeo_integrations.voice): mixed licence. The OpenAI text-to-speech, Speechmatics
+speech-to-text and faster-whisper engines, their two base modules and their travelling test are
+derived from RasaHQ/rasa-community-resources (commit 9f85e2be9398f23dc06b30f4b8f1f53964627251,
+patterns/voice-vendor-router) and are licensed under the Apache License, Version 2.0, NOT MIT.
+Licence text: src/zeo_integrations/voice/LICENSE. Modifications, source paths and blobs, and the
+per-file table: src/zeo_integrations/voice/NOTICE. The upstream repository states no copyright line,
+and none is invented here. The remainder of this repository stays MIT.
